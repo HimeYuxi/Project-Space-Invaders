@@ -79,7 +79,10 @@ public class LogicScript : MonoBehaviour
     public void BackToMainMenu()
     {
         Debug.Log("Loading Main Menu");
+        gameIsPaused = false;
+        gameIsOver = false;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+        Time.timeScale = 1;
     }
 
     public void QuitGame()

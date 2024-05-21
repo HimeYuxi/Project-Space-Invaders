@@ -5,16 +5,19 @@ using UnityEngine.SceneManagement;
 
 public class InvadersGridScript : MonoBehaviour
 {
+    // This just below is an Array, not a List
     public InvaderScript[] prefabs;
     public int rows = 5;
     public int columns = 9;
     public AnimationCurve speed;
     public float missleAttackRate = 1f;
     public Projectile missilePrefab;
-    public GameObject LeftBoundary;
-    public GameObject RightBoundary;
+    public GameObject leftBoundary;
+    public GameObject rightBoundary;
 
     public LogicScript logic;
+    public AudioManagerScript audioManager;
+
     public InvaderScript invader;
 
     public int amountKilled { get; private set; }
@@ -27,6 +30,7 @@ public class InvadersGridScript : MonoBehaviour
 
     private void Awake()
     {
+        // Creating the Invaders grid with a loop
         for (int row = 0; row < this.rows; row++)
         {
             float width = 1.5f * (this.columns - 1);
@@ -36,9 +40,12 @@ public class InvadersGridScript : MonoBehaviour
 
             for (int col = 0; col < this.columns; col++)
             {
+                // Setting the first slot of 4 invaders
+                // (the 4 of them will be on top of each other idk I didn't understand all of the tutorial)
                 InvaderScript invader = Instantiate(this.prefabs[row], this.transform);
                 invader.killed += InvaderKilled;
 
+                // Setting the position of the next invader
                 Vector3 position = rowPosition;
                 position.x += col * 1.5f;
                 invader.transform.localPosition = position;
@@ -49,6 +56,8 @@ public class InvadersGridScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManagerScript>();
+
         InvokeRepeating(nameof(MissileAttack), this.missleAttackRate, this.missleAttackRate);
     }
 
@@ -63,9 +72,10 @@ public class InvadersGridScript : MonoBehaviour
             //Vector3 leftEdge = Camera.main.ViewportToWorldPoint(Vector3.zero);
             //Vector3 rightEdge = Camera.main.ViewportToWorldPoint(Vector3.right);
 
-            Bounds LeftBounds = LeftBoundary.GetComponent<BoxCollider2D>().bounds;
-            Bounds RightBounds = RightBoundary.GetComponent<BoxCollider2D>().bounds;
+            Bounds LeftBounds = leftBoundary.GetComponent<BoxCollider2D>().bounds;
+            Bounds RightBounds = rightBoundary.GetComponent<BoxCollider2D>().bounds;
 
+            // max means roughly the right side of the collider and the opposite goes for min
             Vector3 leftEdge = LeftBounds.max;
             Vector3 rightEdge = RightBounds.min;
 
@@ -111,6 +121,7 @@ public class InvadersGridScript : MonoBehaviour
             if (Random.value < (1.0 / (float)this.amountAlive) && !LogicScript.gameIsOver)
             {
                 Instantiate(this.missilePrefab, invader.position, Quaternion.identity);
+                AudioManagerScript.instance.PlayOneShot(FMODEventsScript.instance.InvaShootSound, transform.position);
                 break;
             }
         }

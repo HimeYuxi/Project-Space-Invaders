@@ -5,30 +5,33 @@ using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
+    public WeaponScript weaponScript;
+    public GameObject leftBoundary;
+    public GameObject rightBoundary;
+    public LogicScript logic;
+    public AudioManagerScript audioManager;
+
     public float speed = 2;
     public int healthPoints = 3;
-    public bool playerIsDead = false;
+
+    public bool playerIsDead;
 
     public Sprite[] animationSprites;
     public SpriteRenderer spriteRender;
 
-    public Projectile laserPrefab;
-    private bool laserActive;
-    public GameObject LeftBoundary;
-    public GameObject RightBoundary;
-    public LogicScript logic;
-
     // Start is called before the first frame update
     void Start()
     {
-        //logic = GameObject.FindGameObjectWithTag("Logic").GetComponent<LogicScript>();
+        logic = GameObject.FindGameObjectWithTag("Logic").GetComponent<LogicScript>();
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManagerScript>();
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        Bounds LeftBounds = LeftBoundary.GetComponent<BoxCollider2D>().bounds;
-        Bounds RightBounds = RightBoundary.GetComponent<BoxCollider2D>().bounds;
+        Bounds LeftBounds = leftBoundary.GetComponent<BoxCollider2D>().bounds;
+        Bounds RightBounds = rightBoundary.GetComponent<BoxCollider2D>().bounds;
 
         Vector3 leftEdge = LeftBounds.max;
         Vector3 rightEdge = RightBounds.min;
@@ -48,27 +51,8 @@ public class Player : MonoBehaviour
                 this.transform.position += Vector3.left * this.speed * Time.deltaTime;
             }
 
-            if ((Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)) && !LogicScript.gameIsPaused)
-            {
-                Shoot();
-            }
         }
 
-    }
-
-    void Shoot()
-    {
-        if (!laserActive)
-        {
-            Projectile projectile = Instantiate(this.laserPrefab, this.transform.position, Quaternion.identity);
-            projectile.destroyed += LaserDestroyed;
-            laserActive = true;
-        }
-    }
-
-    void LaserDestroyed()
-    {
-        laserActive = false;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -100,12 +84,14 @@ public class Player : MonoBehaviour
     public void TakeDamage()
     {
         healthPoints -= 1;
+        AudioManagerScript.instance.PlayOneShot(FMODEventsScript.instance.PlayerHitSound, transform.position);
         Debug.Log("oof" + healthPoints);
     }
 
     public void Death()
     {
         playerIsDead = true;
+        AudioManagerScript.instance.PlayOneShot(FMODEventsScript.instance.PlayerDeathSound, transform.position);
         spriteRender.sprite = animationSprites[0];
         StartCoroutine(logic.GameOver());
     }

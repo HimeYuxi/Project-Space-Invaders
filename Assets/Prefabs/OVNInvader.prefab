@@ -74,7 +74,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -2
   m_Sprite: {fileID: 21300000, guid: a4d1c0126515a3441b706a5d58ee76a4, type: 3}
   m_Color: {r: 0.5509434, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -133,3 +133,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ac65714a505b0c4692f0b3b1ea4ba67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  logic: {fileID: 0}
+  fireRateBonus: {fileID: 7387046449714876151, guid: 367e3735405958641bfd010bbca90c6d, type: 3}
+  shieldBonus: {fileID: 5075304133059866427, guid: cc24500d7b5d79d478d2a660951bf577, type: 3}
+  tripleShotBonus: {fileID: 6171621114901203567, guid: 3f596767323ec81428dfd6774a5a4a30, type: 3}
+  homingShotBonus: {fileID: 503513693823979300, guid: 422f9661feef8f7469b94c0a1b9a622a, type: 3}
+  score: 300
+  speed: 5
+  edgePosition: 9.3
+  motionless: 1

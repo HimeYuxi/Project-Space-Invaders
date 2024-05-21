@@ -7,6 +7,19 @@ TagManager:
   - CenterObject
   - LastState
   - Logic
+  - FireRateBonus
+  - PlayerShield
+  - ShieldBonus
+  - TripleShotBonus
+  - HomingShotBonus
+  - PlayerWeapon
+  - AltPlayerWeapon
+  - Boundary
+  - LeftBoundary
+  - RightBoundary
+  - Audio
+  - Invader
+  - Laser
   layers:
   - Default
   - TransparentFX
@@ -20,7 +33,7 @@ TagManager:
   - Missile
   - Bunker
   - Ground
-  - 
+  - Bonus
   - 
   - 
   - 

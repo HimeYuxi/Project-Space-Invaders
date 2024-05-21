@@ -5,8 +5,11 @@ using UnityEngine;
 public class InvaderScript : MonoBehaviour
 {
     public LogicScript logic;
+    public AudioManagerScript audioManager;
+
     //public GameObject ground;
 
+    public GameObject invadeath;
     public Sprite[] animationSprites;
     public float animationTime = 1.0f;
     public System.Action killed;
@@ -15,6 +18,7 @@ public class InvaderScript : MonoBehaviour
     private int animationFrame;
 
     public int invaderScore = 10;
+    bool hasBeenDestroyed;
 
     private void Awake()
     {
@@ -26,6 +30,7 @@ public class InvaderScript : MonoBehaviour
     {
         InvokeRepeating(nameof(AnimateSprite), this.animationTime, this.animationTime);
         logic = GameObject.FindGameObjectWithTag("Logic").GetComponent<LogicScript>();
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManagerScript>();
     }
 
     private void AnimateSprite()
@@ -40,13 +45,25 @@ public class InvaderScript : MonoBehaviour
         spriteRenderer.sprite = this.animationSprites[animationFrame];
     }
 
+    void Invadeath()
+    {
+        AudioManagerScript.instance.PlayOneShot(FMODEventsScript.instance.InvadeathSound, transform.position);
+        this.killed.Invoke();
+        logic.AddScore(invaderScore);
+        this.gameObject.SetActive(false);
+        Instantiate(invadeath, new Vector3 (transform.position.x, transform.position.y), Quaternion.identity);
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Laser"))
         {
-            this.killed.Invoke();
-            logic.AddScore(invaderScore);
-            this.gameObject.SetActive(false);
+            if (!hasBeenDestroyed)
+            {
+                hasBeenDestroyed = true;
+                Invadeath();
+            }
+
         }
 
         if (other.gameObject.layer == LayerMask.NameToLayer("Ground"))

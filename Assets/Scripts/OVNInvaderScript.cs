@@ -5,6 +5,12 @@ using UnityEngine;
 public class OVNInvaderScript : MonoBehaviour
 {
     public LogicScript logic;
+    public GameObject fireRateBonus;
+    public GameObject shieldBonus;
+    public GameObject tripleShotBonus;
+    public GameObject homingShotBonus;
+
+
     public int score = 300;
     public float speed = 5;
     public float edgePosition = 9.3f;
@@ -48,6 +54,12 @@ public class OVNInvaderScript : MonoBehaviour
         if (other.gameObject.layer == LayerMask.NameToLayer("Laser"))
         {
             logic.AddScore(this.score);
+
+            GameObject[] bonusArray = { fireRateBonus, shieldBonus, tripleShotBonus, homingShotBonus};
+            GameObject selectedBonus = bonusArray[Random.Range(0, bonusArray.Length)];
+
+            Instantiate(selectedBonus, transform.position, Quaternion.identity);
+
             Destroy(gameObject);
         }
 

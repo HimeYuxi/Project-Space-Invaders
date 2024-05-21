@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7014029961280095292}
   m_Layer: 7
   m_Name: InvaderBase
-  m_TagString: Untagged
+  m_TagString: Invader
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -143,5 +143,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df53db328944afb43ad3233241b6e871, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animationSprites: []
+  logic: {fileID: 0}
+  audioManager: {fileID: 0}
+  invadeath: {fileID: 3147295886518684076, guid: 61d634a4731e67e4291907720b232b99, type: 3}
+  animationSprites:
+  - {fileID: 0}
+  - {fileID: 0}
   animationTime: 1
+  invaderScore: 10
